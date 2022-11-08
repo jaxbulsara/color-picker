@@ -95,37 +95,10 @@ export function rgb_to_hsv(rgb) {
 
 export function hsv_to_rgb(hsv) {
   // Calculate constants
-  const C = hsv.V * hsv.S;
-  const H_prime = 1 - Math.abs(((hsv.H / 60) % 2) - 1);
-  const X = C * H_prime;
-  const m = hsv.V - C;
-  const H_select = Math.trunc((hsv.H / 60) % 6);
+  const [C, X, m] = getHSVConstants(hsv);
 
   // Calculate RGB
-  let rgb = new Array(3);
-
-  switch (H_select) {
-    case 0:
-      rgb = [C, X, 0];
-      break;
-    case 1:
-      rgb = [X, C, 0];
-      break;
-    case 2:
-      rgb = [0, C, X];
-      break;
-    case 3:
-      rgb = [0, X, C];
-      break;
-    case 4:
-      rgb = [X, 0, C];
-      break;
-    case 5:
-      rgb = [C, 0, X];
-      break;
-  }
-
-  rgb = rgb.map((n) => 255 * (n + m));
+  const rgb = getRGBPrime(hsv.H, C, X).map((n) => 255 * (n + m));
 
   return new RGB(...rgb);
 }
@@ -154,4 +127,42 @@ function mapDegrees(degrees) {
 
 function toHexString(int) {
   return int.toString(16).toUpperCase().padStart(2, "0");
+}
+
+function getHSVConstants(hsv) {
+  const C = hsv.V * hsv.S;
+  const H_prime = calculateHPrime(hsv.H);
+  const X = C * H_prime;
+  const m = hsv.V - C;
+
+  return [C, X, m, H_prime];
+}
+
+function calculateHPrime(H) {
+  return 1 - Math.abs(((H / 60) % 2) - 1);
+}
+
+function getRGBPrime(H, C, X) {
+  return RGBCombination(H, C, X, 0);
+}
+
+function RGBCombination(H, A, B, C) {
+  switch (calculateHDomain(H)) {
+    case C:
+      return [A, B, C];
+    case 1:
+      return [B, A, C];
+    case 2:
+      return [C, A, B];
+    case 3:
+      return [C, B, A];
+    case 4:
+      return [B, C, A];
+    case 5:
+      return [A, C, B];
+  }
+}
+
+function calculateHDomain(H) {
+  return Math.trunc((H / 60) % 6);
 }
