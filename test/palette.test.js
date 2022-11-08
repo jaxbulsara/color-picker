@@ -129,6 +129,14 @@ describe("HEX to RGB conversion", () => {
     expect(rgb.B).toBe(127);
   });
 
+  it("Converts valid shorthand hex with extraneous text", () => {
+    hex = "hello#a1f.world";
+    rgb = hex_to_rgb(hex);
+    expect(rgb.R).toBe(170);
+    expect(rgb.G).toBe(17);
+    expect(rgb.B).toBe(255);
+  });
+
   it("Handles invalid hex string", () => {
     hex = "not_a_hex";
     rgb = hex_to_rgb(hex);

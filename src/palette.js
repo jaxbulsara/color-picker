@@ -49,7 +49,7 @@ export function hex_to_rgb(hex) {
 
 // Helpers
 
-const toHexString = (int) => {
+function toHexString(int) {
   let hex;
 
   if (!Number.isInteger(int)) {
@@ -63,4 +63,4 @@ const toHexString = (int) => {
   }
 
   return hex;
-};
+}
