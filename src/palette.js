@@ -56,6 +56,43 @@ export function hex_to_rgb(hex) {
   return new RGB(...rgb);
 }
 
+export function rgb_to_hsv(rgb) {
+  let H, S, V;
+
+  // Calculate constants
+  const r_prime = rgb.R / 255;
+  const g_prime = rgb.G / 255;
+  const b_prime = rgb.B / 255;
+
+  const C_max = Math.max(r_prime, g_prime, b_prime);
+  const C_min = Math.min(r_prime, g_prime, b_prime);
+  const delta = C_max - C_min;
+
+  // Calculate H
+  if (delta == 0) H = 0;
+  else
+    switch (C_max) {
+      case r_prime:
+        H = 60 * (((g_prime - b_prime) / delta) % 6);
+        break;
+      case g_prime:
+        H = 60 * ((b_prime - r_prime) / delta + 2);
+        break;
+      case b_prime:
+        H = 60 * ((r_prime - g_prime) / delta + 4);
+        break;
+    }
+
+  // Calculate S
+  if (C_max == 0) S = 0;
+  else S = delta / C_max;
+
+  // Calculate V
+  V = C_max;
+
+  return new HSV(H, S, V);
+}
+
 // Helpers
 
 function normalize(value, min, max, default_) {

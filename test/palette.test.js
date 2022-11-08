@@ -1,6 +1,13 @@
 // Palette library tests
 
-import { RGB, HSV, HCL, rgb_to_hex, hex_to_rgb } from "../src/palette.js";
+import {
+  RGB,
+  HSV,
+  HCL,
+  rgb_to_hex,
+  hex_to_rgb,
+  rgb_to_hsv,
+} from "../src/palette.js";
 
 describe("Color types", () => {
   describe("RGB", () => {
@@ -200,5 +207,57 @@ describe("HEX to RGB conversion", () => {
     hex = 0;
     rgb = hex_to_rgb(hex);
     expect(rgb).toBeNaN();
+  });
+});
+
+describe("RGB to HSV conversion", () => {
+  let rgb, hsv;
+
+  it("Converts black", () => {
+    rgb = new RGB(0, 0, 0);
+    hsv = rgb_to_hsv(rgb);
+    expect(hsv.H).toBe(0);
+    expect(hsv.S).toBe(0);
+    expect(hsv.V).toBe(0);
+  });
+
+  it("Converts grey", () => {
+    rgb = new RGB(127, 127, 127);
+    hsv = rgb_to_hsv(rgb);
+    expect(hsv.H).toBe(0);
+    expect(hsv.S).toBe(0);
+    expect(hsv.V).toBeCloseTo(0.498);
+  });
+
+  it("Converts white", () => {
+    rgb = new RGB(255, 255, 255);
+    hsv = rgb_to_hsv(rgb);
+    expect(hsv.H).toBe(0);
+    expect(hsv.S).toBe(0);
+    expect(hsv.V).toBe(1);
+  });
+
+  it("Converts red", () => {
+    rgb = new RGB(255, 127, 127);
+    hsv = rgb_to_hsv(rgb);
+    expect(hsv.H).toBe(0);
+    expect(hsv.S).toBeCloseTo(0.502);
+    expect(hsv.V).toBe(1);
+  });
+
+  it("Converts green", () => {
+    rgb = new RGB(127, 255, 127);
+    hsv = rgb_to_hsv(rgb);
+    expect(hsv.H).toBe(120);
+    expect(hsv.S).toBeCloseTo(0.502);
+    expect(hsv.V).toBe(1);
+  });
+
+  it("Converts blue", () => {
+    rgb = new RGB(127, 127, 255);
+    hsv = rgb_to_hsv(rgb);
+    expect(hsv.H).toBe(240);
+    expect(hsv.S).toBeCloseTo(0.502);
+    expect(hsv.V).toBe(1);
   });
 });
