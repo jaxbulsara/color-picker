@@ -30,11 +30,9 @@ const DEFAULT_RGB = NaN;
 // Functions
 
 export function rgb_to_hex(rgb) {
-  const rHex = toHexString(rgb.R);
-  const gHex = toHexString(rgb.G);
-  const bHex = toHexString(rgb.B);
-
-  return rHex + gHex + bHex;
+  return rgb
+    .toArray()
+    .reduce((previous, current) => previous.concat(toHexString(current)), "");
 }
 
 export function hex_to_rgb(hex) {
