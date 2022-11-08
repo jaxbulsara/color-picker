@@ -1,1 +1,0 @@
-// Palette library tests
