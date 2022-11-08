@@ -2,24 +2,24 @@
 
 // Types
 
-export function RGB(R, G, B) {
-  this.R = normalize(R, 0, 255, 0);
-  this.G = normalize(G, 0, 255, 0);
-  this.B = normalize(B, 0, 255, 0);
+export function RGB(red, grn, blu) {
+  this.R = normalizeNumber(red, 0, 255);
+  this.G = normalizeNumber(grn, 0, 255);
+  this.B = normalizeNumber(blu, 0, 255);
   this.toArray = () => [this.R, this.G, this.B];
 }
 
-export function HSV(H, S, V) {
-  this.H = normalize(H, 0, 360, 0);
-  this.S = normalize(S, 0, 1, 0);
-  this.V = normalize(V, 0, 1, 0);
+export function HSV(hue, sat, val) {
+  this.H = normalizeDegrees(hue);
+  this.S = normalizeNumber(sat, 0, 1);
+  this.V = normalizeNumber(val, 0, 1);
   this.toArray = () => [this.H, this.S, this.V];
 }
 
-export function HCL(H, C, L) {
-  this.H = normalize(H, 0, 360, 0);
-  this.C = normalize(C, 0, 1, 0);
-  this.L = normalize(L, 0, 1, 0);
+export function HCL(hue, cro, lum) {
+  this.H = normalizeDegrees(hue);
+  this.C = normalizeNumber(cro, 0, 1);
+  this.L = normalizeNumber(lum, 0, 1);
   this.toArray = () => [this.H, this.C, this.L];
 }
 
@@ -93,12 +93,63 @@ export function rgb_to_hsv(rgb) {
   return new HSV(H, S, V);
 }
 
+export function hsv_to_rgb(hsv) {
+  // Calculate constants
+  const C = hsv.V * hsv.S;
+  const H_prime = 1 - Math.abs(((hsv.H / 60) % 2) - 1);
+  const X = C * H_prime;
+  const m = hsv.V - C;
+  const H_select = Math.trunc((hsv.H / 60) % 6);
+
+  // Calculate RGB
+  let rgb = new Array(3);
+
+  switch (H_select) {
+    case 0:
+      rgb = [C, X, 0];
+      break;
+    case 1:
+      rgb = [X, C, 0];
+      break;
+    case 2:
+      rgb = [0, C, X];
+      break;
+    case 3:
+      rgb = [0, X, C];
+      break;
+    case 4:
+      rgb = [X, 0, C];
+      break;
+    case 5:
+      rgb = [C, 0, X];
+      break;
+  }
+
+  rgb = rgb.map((n) => 255 * (n + m));
+
+  return new RGB(...rgb);
+}
+
 // Helpers
 
-function normalize(value, min, max, default_) {
+function normalizeNumber(value, min, max, default_ = 0) {
   const num = new Number(value);
   if (isNaN(num)) return default_;
-  return Math.min(max, Math.max(min, num));
+  return minmax(num, min, max);
+}
+
+function normalizeDegrees(value, default_ = 0) {
+  const num = new Number(value);
+  if (isNaN(num)) return default_;
+  return mapDegrees(value);
+}
+
+function minmax(number, min, max) {
+  return Math.min(max, Math.max(min, number));
+}
+
+function mapDegrees(degrees) {
+  return degrees - 360 * Math.floor(degrees / 360);
 }
 
 function toHexString(int) {

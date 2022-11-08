@@ -7,6 +7,7 @@ import {
   rgb_to_hex,
   hex_to_rgb,
   rgb_to_hsv,
+  hsv_to_rgb,
 } from "../src/palette.js";
 
 describe("Color types", () => {
@@ -47,31 +48,31 @@ describe("Color types", () => {
 
   describe("HSV", () => {
     it("Creates a new object", () => {
-      const rgb = new HSV(0, 0.5, 1);
-      expect(rgb.H).toBe(0);
-      expect(rgb.S).toBe(0.5);
-      expect(rgb.V).toBe(1);
+      const hsv = new HSV(0, 0.5, 1);
+      expect(hsv.H).toBe(0);
+      expect(hsv.S).toBe(0.5);
+      expect(hsv.V).toBe(1);
     });
 
     it("Enforces minimum values", () => {
-      const rgb = new HSV(-1, -1, -1);
-      expect(rgb.H).toBe(0);
-      expect(rgb.S).toBe(0);
-      expect(rgb.V).toBe(0);
+      const hsv = new HSV(-1, -1, -1);
+      expect(hsv.H).toBe(359);
+      expect(hsv.S).toBe(0);
+      expect(hsv.V).toBe(0);
     });
 
     it("Enforces maximum values", () => {
-      const rgb = new HSV(1000, 1000, 1000);
-      expect(rgb.H).toBe(360);
-      expect(rgb.S).toBe(1);
-      expect(rgb.V).toBe(1);
+      const hsv = new HSV(1000, 1000, 1000);
+      expect(hsv.H).toBe(280);
+      expect(hsv.S).toBe(1);
+      expect(hsv.V).toBe(1);
     });
 
     it("Handles invalid argument types", () => {
-      const rgb = new HSV("a", "b", "c");
-      expect(rgb.H).toBe(0);
-      expect(rgb.S).toBe(0);
-      expect(rgb.V).toBe(0);
+      const hsv = new HSV("a", "b", "c");
+      expect(hsv.H).toBe(0);
+      expect(hsv.S).toBe(0);
+      expect(hsv.V).toBe(0);
     });
 
     it("Transforms into an array", () => {
@@ -82,31 +83,31 @@ describe("Color types", () => {
 
   describe("HCL", () => {
     it("Creates a new object", () => {
-      const rgb = new HCL(0, 0.5, 1);
-      expect(rgb.H).toBe(0);
-      expect(rgb.C).toBe(0.5);
-      expect(rgb.L).toBe(1);
+      const hcl = new HCL(0, 0.5, 1);
+      expect(hcl.H).toBe(0);
+      expect(hcl.C).toBe(0.5);
+      expect(hcl.L).toBe(1);
     });
 
     it("Enforces minimum values", () => {
-      const rgb = new HCL(-1, -1, -1);
-      expect(rgb.H).toBe(0);
-      expect(rgb.C).toBe(0);
-      expect(rgb.L).toBe(0);
+      const hcl = new HCL(-1, -1, -1);
+      expect(hcl.H).toBe(359);
+      expect(hcl.C).toBe(0);
+      expect(hcl.L).toBe(0);
     });
 
     it("Enforces maximum values", () => {
-      const rgb = new HCL(1000, 1000, 1000);
-      expect(rgb.H).toBe(360);
-      expect(rgb.C).toBe(1);
-      expect(rgb.L).toBe(1);
+      const hcl = new HCL(1000, 1000, 1000);
+      expect(hcl.H).toBe(280);
+      expect(hcl.C).toBe(1);
+      expect(hcl.L).toBe(1);
     });
 
     it("Handles invalid argument types", () => {
-      const rgb = new HCL("a", "b", "c");
-      expect(rgb.H).toBe(0);
-      expect(rgb.C).toBe(0);
-      expect(rgb.L).toBe(0);
+      const hcl = new HCL("a", "b", "c");
+      expect(hcl.H).toBe(0);
+      expect(hcl.C).toBe(0);
+      expect(hcl.L).toBe(0);
     });
 
     it("Transforms into an array", () => {
@@ -245,7 +246,7 @@ describe("HEX to RGB conversion", () => {
 });
 
 describe("RGB to HSV conversion", () => {
-  let rgb, hsv;
+  let rgb, hsv, rgb_rev;
 
   it("Converts black", () => {
     rgb = new RGB(0, 0, 0);
@@ -253,6 +254,9 @@ describe("RGB to HSV conversion", () => {
     expect(hsv.H).toBe(0);
     expect(hsv.S).toBe(0);
     expect(hsv.V).toBe(0);
+
+    rgb_rev = hsv_to_rgb(hsv);
+    expectColorsToBeEqual(rgb, rgb_rev);
   });
 
   it("Converts grey", () => {
@@ -260,7 +264,10 @@ describe("RGB to HSV conversion", () => {
     hsv = rgb_to_hsv(rgb);
     expect(hsv.H).toBe(0);
     expect(hsv.S).toBe(0);
-    expect(hsv.V).toBeCloseTo(0.498);
+    expect(hsv.V).toBeCloseTo(0.498039);
+
+    rgb_rev = hsv_to_rgb(hsv);
+    expectColorsToBeEqual(rgb, rgb_rev);
   });
 
   it("Converts white", () => {
@@ -269,29 +276,155 @@ describe("RGB to HSV conversion", () => {
     expect(hsv.H).toBe(0);
     expect(hsv.S).toBe(0);
     expect(hsv.V).toBe(1);
+
+    rgb_rev = hsv_to_rgb(hsv);
+    expectColorsToBeEqual(rgb, rgb_rev);
   });
 
   it("Converts red", () => {
     rgb = new RGB(255, 127, 127);
     hsv = rgb_to_hsv(rgb);
     expect(hsv.H).toBe(0);
-    expect(hsv.S).toBeCloseTo(0.502);
+    expect(hsv.S).toBeCloseTo(0.501961);
     expect(hsv.V).toBe(1);
+
+    rgb_rev = hsv_to_rgb(hsv);
+    expectColorsToBeEqual(rgb, rgb_rev);
   });
 
   it("Converts green", () => {
     rgb = new RGB(127, 255, 127);
     hsv = rgb_to_hsv(rgb);
     expect(hsv.H).toBe(120);
-    expect(hsv.S).toBeCloseTo(0.502);
+    expect(hsv.S).toBeCloseTo(0.501961);
     expect(hsv.V).toBe(1);
+
+    rgb_rev = hsv_to_rgb(hsv);
+    expectColorsToBeEqual(rgb, rgb_rev);
   });
 
   it("Converts blue", () => {
     rgb = new RGB(127, 127, 255);
     hsv = rgb_to_hsv(rgb);
     expect(hsv.H).toBe(240);
-    expect(hsv.S).toBeCloseTo(0.502);
+    expect(hsv.S).toBeCloseTo(0.501961);
     expect(hsv.V).toBe(1);
+
+    rgb_rev = hsv_to_rgb(hsv);
+    expectColorsToBeEqual(rgb, rgb_rev);
+  });
+});
+
+describe("HSV to RGB conversion", () => {
+  let rgb, hsv, hsv_rev;
+
+  it("Converts black", () => {
+    hsv = new HSV(0, 0, 0);
+    rgb = hsv_to_rgb(hsv);
+    expect(rgb.R).toBe(0);
+    expect(rgb.G).toBe(0);
+    expect(rgb.B).toBe(0);
+
+    hsv_rev = rgb_to_hsv(rgb);
+    expectColorsToBeEqual(hsv, hsv_rev);
+  });
+
+  it("Converts grey", () => {
+    hsv = new HSV(0, 0, 0.498039);
+    rgb = hsv_to_rgb(hsv);
+    expect(rgb.R).toBeCloseTo(127);
+    expect(rgb.G).toBeCloseTo(127);
+    expect(rgb.B).toBeCloseTo(127);
+
+    hsv_rev = rgb_to_hsv(rgb);
+    expectColorsToBeEqual(hsv, hsv_rev);
+  });
+
+  it("Converts white", () => {
+    hsv = new HSV(0, 0, 1);
+    rgb = hsv_to_rgb(hsv);
+    expect(rgb.R).toBe(255);
+    expect(rgb.G).toBe(255);
+    expect(rgb.B).toBe(255);
+
+    hsv_rev = rgb_to_hsv(rgb);
+    expectColorsToBeEqual(hsv, hsv_rev);
+  });
+
+  it("Converts red", () => {
+    hsv = new HSV(0, 0.9, 1);
+    rgb = hsv_to_rgb(hsv);
+    expect(rgb.R).toBe(255);
+    expect(rgb.G).toBeCloseTo(25.5);
+    expect(rgb.B).toBeCloseTo(25.5);
+
+    hsv_rev = rgb_to_hsv(rgb);
+    expectColorsToBeEqual(hsv, hsv_rev);
+  });
+
+  it("Converts yellow", () => {
+    hsv = new HSV(60, 0.9, 1);
+    rgb = hsv_to_rgb(hsv);
+    expect(rgb.R).toBe(255);
+    expect(rgb.G).toBe(255);
+    expect(rgb.B).toBeCloseTo(25.5);
+
+    hsv_rev = rgb_to_hsv(rgb);
+    expectColorsToBeEqual(hsv, hsv_rev);
+  });
+
+  it("Converts green", () => {
+    hsv = new HSV(120, 0.9, 1);
+    rgb = hsv_to_rgb(hsv);
+    expect(rgb.R).toBeCloseTo(25.5);
+    expect(rgb.G).toBe(255);
+    expect(rgb.B).toBeCloseTo(25.5);
+
+    hsv_rev = rgb_to_hsv(rgb);
+    expectColorsToBeEqual(hsv, hsv_rev);
+  });
+
+  it("Converts cyan", () => {
+    hsv = new HSV(180, 0.9, 1);
+    rgb = hsv_to_rgb(hsv);
+    expect(rgb.R).toBeCloseTo(25.5);
+    expect(rgb.G).toBe(255);
+    expect(rgb.B).toBe(255);
+
+    hsv_rev = rgb_to_hsv(rgb);
+    expectColorsToBeEqual(hsv, hsv_rev);
+  });
+
+  it("Converts blue", () => {
+    hsv = new HSV(240, 0.9, 1);
+    rgb = hsv_to_rgb(hsv);
+    expect(rgb.R).toBeCloseTo(25.5);
+    expect(rgb.G).toBeCloseTo(25.5);
+    expect(rgb.B).toBe(255);
+
+    hsv_rev = rgb_to_hsv(rgb);
+    expectColorsToBeEqual(hsv, hsv_rev);
+  });
+
+  it("Converts magenta", () => {
+    hsv = new HSV(300, 0.9, 1);
+    rgb = hsv_to_rgb(hsv);
+    expect(rgb.R).toBe(255);
+    expect(rgb.G).toBeCloseTo(25.5);
+    expect(rgb.B).toBe(255);
+
+    hsv_rev = rgb_to_hsv(rgb);
+    expectColorsToBeEqual(hsv, hsv_rev);
+  });
+
+  it("Converts red 360", () => {
+    hsv = new HSV(360, 0.9, 1);
+    rgb = hsv_to_rgb(hsv);
+    expect(rgb.R).toBe(255);
+    expect(rgb.G).toBeCloseTo(25.5);
+    expect(rgb.B).toBeCloseTo(25.5);
+
+    hsv_rev = rgb_to_hsv(rgb);
+    expectColorsToBeEqual(hsv, hsv_rev);
   });
 });
