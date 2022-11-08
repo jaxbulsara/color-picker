@@ -116,30 +116,43 @@ describe("Color types", () => {
   });
 });
 
+function expectColorsToBeEqual(col1, col2) {
+  expect(col1.toArray()).toEqual(expect.arrayContaining(col2.toArray()));
+}
+
 describe("RGB to HEX conversion", () => {
-  let rgb, hex;
+  let rgb, hex, rgb_rev;
 
   it("Converts black", () => {
     rgb = new RGB(0, 0, 0);
     hex = rgb_to_hex(rgb);
     expect(hex).toBe("000000");
+
+    rgb_rev = hex_to_rgb(hex);
+    expectColorsToBeEqual(rgb, rgb_rev);
   });
 
   it("Converts red", () => {
     rgb = new RGB(255, 0, 0);
     hex = rgb_to_hex(rgb);
     expect(hex).toBe("FF0000");
+
+    rgb_rev = hex_to_rgb(hex);
+    expectColorsToBeEqual(rgb, rgb_rev);
   });
 
   it("Converts grey", () => {
     rgb = new RGB(127, 127, 127);
     hex = rgb_to_hex(rgb);
     expect(hex).toBe("7F7F7F");
+
+    rgb_rev = hex_to_rgb(hex);
+    expectColorsToBeEqual(rgb, rgb_rev);
   });
 });
 
 describe("HEX to RGB conversion", () => {
-  let hex, rgb;
+  let hex, rgb, hex_rev;
 
   it("Converts black", () => {
     hex = "000000";
@@ -147,6 +160,9 @@ describe("HEX to RGB conversion", () => {
     expect(rgb.R).toBe(0);
     expect(rgb.G).toBe(0);
     expect(rgb.B).toBe(0);
+
+    hex_rev = rgb_to_hex(rgb);
+    expect(hex_rev).toBe(hex);
   });
 
   it("Converts red", () => {
@@ -155,6 +171,9 @@ describe("HEX to RGB conversion", () => {
     expect(rgb.R).toBe(255);
     expect(rgb.G).toBe(0);
     expect(rgb.B).toBe(0);
+
+    hex_rev = rgb_to_hex(rgb);
+    expect(hex_rev).toBe(hex);
   });
 
   it("Converts grey", () => {
@@ -163,6 +182,9 @@ describe("HEX to RGB conversion", () => {
     expect(rgb.R).toBe(127);
     expect(rgb.G).toBe(127);
     expect(rgb.B).toBe(127);
+
+    hex_rev = rgb_to_hex(rgb);
+    expect(hex_rev).toBe(hex);
   });
 
   it("Converts shorthand hex", () => {
@@ -171,6 +193,9 @@ describe("HEX to RGB conversion", () => {
     expect(rgb.R).toBe(0);
     expect(rgb.G).toBe(17);
     expect(rgb.B).toBe(34);
+
+    hex_rev = rgb_to_hex(rgb);
+    expect(hex_rev).toBe("001122");
   });
 
   it("Converts lowercase hex", () => {
@@ -179,6 +204,9 @@ describe("HEX to RGB conversion", () => {
     expect(rgb.R).toBe(127);
     expect(rgb.G).toBe(127);
     expect(rgb.B).toBe(127);
+
+    hex_rev = rgb_to_hex(rgb);
+    expect(hex_rev).toBe("7F7F7F");
   });
 
   it("Converts valid hex with extraneous text", () => {
@@ -187,6 +215,9 @@ describe("HEX to RGB conversion", () => {
     expect(rgb.R).toBe(127);
     expect(rgb.G).toBe(127);
     expect(rgb.B).toBe(127);
+
+    hex_rev = rgb_to_hex(rgb);
+    expect(hex_rev).toBe("7F7F7F");
   });
 
   it("Converts valid shorthand hex with extraneous text", () => {
@@ -195,6 +226,9 @@ describe("HEX to RGB conversion", () => {
     expect(rgb.R).toBe(170);
     expect(rgb.G).toBe(17);
     expect(rgb.B).toBe(255);
+
+    hex_rev = rgb_to_hex(rgb);
+    expect(hex_rev).toBe("AA11FF");
   });
 
   it("Handles invalid hex string", () => {
