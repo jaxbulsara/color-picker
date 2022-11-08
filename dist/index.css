@@ -1,0 +1,9 @@
+#pickerWrapper {
+  display: flex;
+}
+
+#hoveredColor,
+#selectedColor {
+  width: 128px;
+  height: 256px;
+}
