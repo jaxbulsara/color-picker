@@ -31,6 +31,11 @@ describe("Color types", () => {
       expect(rgb.G).toBe(0);
       expect(rgb.B).toBe(0);
     });
+
+    it("Transforms into an array", () => {
+      const rgb = new RGB(0, 1, 2);
+      expect(rgb.toArray()).toEqual(expect.arrayContaining([0, 1, 2]));
+    });
   });
 
   describe("HSV", () => {
@@ -61,6 +66,11 @@ describe("Color types", () => {
       expect(rgb.S).toBe(0);
       expect(rgb.V).toBe(0);
     });
+
+    it("Transforms into an array", () => {
+      const hsv = new HSV(0, 1, 1);
+      expect(hsv.toArray()).toEqual(expect.arrayContaining([0, 1, 1]));
+    });
   });
 
   describe("HCL", () => {
@@ -90,6 +100,11 @@ describe("Color types", () => {
       expect(rgb.H).toBe(0);
       expect(rgb.C).toBe(0);
       expect(rgb.L).toBe(0);
+    });
+
+    it("Transforms into an array", () => {
+      const hcl = new HCL(0, 1, 1);
+      expect(hcl.toArray()).toEqual(expect.arrayContaining([0, 1, 1]));
     });
   });
 });

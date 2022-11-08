@@ -6,18 +6,21 @@ export function RGB(R, G, B) {
   this.R = normalize(R, 0, 255, 0);
   this.G = normalize(G, 0, 255, 0);
   this.B = normalize(B, 0, 255, 0);
+  this.toArray = () => [this.R, this.G, this.B];
 }
 
 export function HSV(H, S, V) {
   this.H = normalize(H, 0, 360, 0);
   this.S = normalize(S, 0, 1, 0);
   this.V = normalize(V, 0, 1, 0);
+  this.toArray = () => [this.H, this.S, this.V];
 }
 
 export function HCL(H, C, L) {
   this.H = normalize(H, 0, 360, 0);
   this.C = normalize(C, 0, 1, 0);
   this.L = normalize(L, 0, 1, 0);
+  this.toArray = () => [this.H, this.C, this.L];
 }
 
 // Defaults
