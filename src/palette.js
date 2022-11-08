@@ -108,9 +108,23 @@ export function hsv_to_rgb(hsv) {
   return new RGB(...rgb);
 }
 
-export function calculateLuminance(rgb) {
+export function calculateLuminanceFromRGB(rgb) {
   return (
     Math.sqrt(C_R * rgb.R ** 2 + C_G * rgb.G ** 2 + C_B * rgb.B ** 2) / 255
+  );
+}
+
+export function calculateLuminanceFromHSV(hsv) {
+  const [A, B, C] = getLuminanceConstants(hsv.H);
+  const H_prime = calculateHPrime(hsv.H);
+  const V_squared = hsv.V ** 2;
+
+  console.log("Got constants", A, B, C);
+
+  return Math.sqrt(
+    A * V_squared +
+      B * V_squared * (hsv.S * (H_prime - 1) + 1) ** 2 +
+      C * V_squared * (1 - hsv.S) ** 2
   );
 }
 
@@ -141,27 +155,38 @@ function toHexString(int) {
 }
 
 function getRGBPrime(H, C, X) {
-  return getRGBCombination(H, C, X, 0);
+  switch (calculateHDomain(H)) {
+    case 0:
+      return [C, X, 0];
+    case 1:
+      return [X, C, 0];
+    case 2:
+      return [0, C, X];
+    case 3:
+      return [0, X, C];
+    case 4:
+      return [X, 0, C];
+    case 5:
+      return [C, 0, X];
+  }
 }
 
 function getLuminanceConstants(H) {
-  return getRGBCombination(H, C_R, C_G, C_B);
-}
+  const [R, G, B] = [C_R, C_G, C_B];
 
-function getRGBCombination(H, A, B, C) {
   switch (calculateHDomain(H)) {
-    case C:
-      return [A, B, C];
+    case 0:
+      return [R, G, B];
     case 1:
-      return [B, A, C];
+      return [G, R, B];
     case 2:
-      return [C, A, B];
+      return [G, B, R];
     case 3:
-      return [C, B, A];
+      return [B, G, R];
     case 4:
-      return [B, C, A];
+      return [B, R, G];
     case 5:
-      return [A, C, B];
+      return [R, B, G];
   }
 }
 
