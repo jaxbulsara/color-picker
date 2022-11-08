@@ -23,9 +23,12 @@ export function HCL(hue, cro, lum) {
   this.toArray = () => [this.H, this.C, this.L];
 }
 
-// Defaults
+// Constants
 
 const DEFAULT_RGB = NaN;
+const C_R = 0.299;
+const C_G = 0.587;
+const C_B = 0.114;
 
 // Functions
 
@@ -105,6 +108,12 @@ export function hsv_to_rgb(hsv) {
   return new RGB(...rgb);
 }
 
+export function calculateLuminance(rgb) {
+  return (
+    Math.sqrt(C_R * rgb.R ** 2 + C_G * rgb.G ** 2 + C_B * rgb.B ** 2) / 255
+  );
+}
+
 // Helpers
 
 function normalizeNumber(value, min, max, default_ = 0) {
@@ -133,6 +142,10 @@ function toHexString(int) {
 
 function getRGBPrime(H, C, X) {
   return getRGBCombination(H, C, X, 0);
+}
+
+function getLuminanceConstants(H) {
+  return getRGBCombination(H, C_R, C_G, C_B);
 }
 
 function getRGBCombination(H, A, B, C) {

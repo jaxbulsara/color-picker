@@ -8,6 +8,7 @@ import {
   hex_to_rgb,
   rgb_to_hsv,
   hsv_to_rgb,
+  calculateLuminance,
 } from "../src/palette.js";
 
 describe("Color types", () => {
@@ -426,5 +427,26 @@ describe("HSV to RGB conversion", () => {
 
     hsv_rev = rgb_to_hsv(rgb);
     expectColorsToBeEqual(hsv, hsv_rev);
+  });
+});
+
+describe("HCL helpers", () => {
+  describe("Luminance calculation", () => {
+    let rgb, lum;
+
+    const rgb_cases = [
+      ["black", 0, 0, 0, 0],
+      ["grey", 127, 127, 127, 0.498039],
+      ["white", 255, 255, 255, 1],
+      ["red", 255, 0, 0, 0.546809],
+      ["green", 0, 255, 0, 0.766159],
+      ["blue", 0, 0, 255, 0.337639],
+    ];
+
+    test.each(rgb_cases)("Calculates RGB %s", (color, R, G, B, L) => {
+      rgb = new RGB(R, G, B);
+      lum = calculateLuminance(rgb);
+      expect(lum).toBeCloseTo(L);
+    });
   });
 });
