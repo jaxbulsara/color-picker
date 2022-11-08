@@ -95,7 +95,9 @@ export function rgb_to_hsv(rgb) {
 
 export function hsv_to_rgb(hsv) {
   // Calculate constants
-  const [C, X, m] = getHSVConstants(hsv);
+  const C = hsv.V * hsv.S;
+  const X = C * calculateHPrime(hsv.H);
+  const m = hsv.V - C;
 
   // Calculate RGB
   const rgb = getRGBPrime(hsv.H, C, X).map((n) => 255 * (n + m));
@@ -129,24 +131,11 @@ function toHexString(int) {
   return int.toString(16).toUpperCase().padStart(2, "0");
 }
 
-function getHSVConstants(hsv) {
-  const C = hsv.V * hsv.S;
-  const H_prime = calculateHPrime(hsv.H);
-  const X = C * H_prime;
-  const m = hsv.V - C;
-
-  return [C, X, m, H_prime];
-}
-
-function calculateHPrime(H) {
-  return 1 - Math.abs(((H / 60) % 2) - 1);
-}
-
 function getRGBPrime(H, C, X) {
-  return RGBCombination(H, C, X, 0);
+  return getRGBCombination(H, C, X, 0);
 }
 
-function RGBCombination(H, A, B, C) {
+function getRGBCombination(H, A, B, C) {
   switch (calculateHDomain(H)) {
     case C:
       return [A, B, C];
@@ -161,6 +150,10 @@ function RGBCombination(H, A, B, C) {
     case 5:
       return [A, C, B];
   }
+}
+
+function calculateHPrime(H) {
+  return 1 - Math.abs(((H / 60) % 2) - 1);
 }
 
 function calculateHDomain(H) {
