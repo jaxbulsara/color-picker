@@ -1,6 +1,98 @@
 // Palette library tests
 
-import { RGB, rgb_to_hex, hex_to_rgb } from "../src/palette.js";
+import { RGB, HSV, HCL, rgb_to_hex, hex_to_rgb } from "../src/palette.js";
+
+describe("Color types", () => {
+  describe("RGB", () => {
+    it("Creates a new object", () => {
+      const rgb = new RGB(0, 1, 2);
+      expect(rgb.R).toBe(0);
+      expect(rgb.G).toBe(1);
+      expect(rgb.B).toBe(2);
+    });
+
+    it("Enforces minimum values", () => {
+      const rgb = new RGB(-1, -1, -1);
+      expect(rgb.R).toBe(0);
+      expect(rgb.G).toBe(0);
+      expect(rgb.B).toBe(0);
+    });
+
+    it("Enforces maximum values", () => {
+      const rgb = new RGB(1000, 1000, 1000);
+      expect(rgb.R).toBe(255);
+      expect(rgb.G).toBe(255);
+      expect(rgb.B).toBe(255);
+    });
+
+    it("Handles invalid argument types", () => {
+      const rgb = new RGB("a", "b", "c");
+      expect(rgb.R).toBe(0);
+      expect(rgb.G).toBe(0);
+      expect(rgb.B).toBe(0);
+    });
+  });
+
+  describe("HSV", () => {
+    it("Creates a new object", () => {
+      const rgb = new HSV(0, 0.5, 1);
+      expect(rgb.H).toBe(0);
+      expect(rgb.S).toBe(0.5);
+      expect(rgb.V).toBe(1);
+    });
+
+    it("Enforces minimum values", () => {
+      const rgb = new HSV(-1, -1, -1);
+      expect(rgb.H).toBe(0);
+      expect(rgb.S).toBe(0);
+      expect(rgb.V).toBe(0);
+    });
+
+    it("Enforces maximum values", () => {
+      const rgb = new HSV(1000, 1000, 1000);
+      expect(rgb.H).toBe(360);
+      expect(rgb.S).toBe(1);
+      expect(rgb.V).toBe(1);
+    });
+
+    it("Handles invalid argument types", () => {
+      const rgb = new HSV("a", "b", "c");
+      expect(rgb.H).toBe(0);
+      expect(rgb.S).toBe(0);
+      expect(rgb.V).toBe(0);
+    });
+  });
+
+  describe("HCL", () => {
+    it("Creates a new object", () => {
+      const rgb = new HCL(0, 0.5, 1);
+      expect(rgb.H).toBe(0);
+      expect(rgb.C).toBe(0.5);
+      expect(rgb.L).toBe(1);
+    });
+
+    it("Enforces minimum values", () => {
+      const rgb = new HCL(-1, -1, -1);
+      expect(rgb.H).toBe(0);
+      expect(rgb.C).toBe(0);
+      expect(rgb.L).toBe(0);
+    });
+
+    it("Enforces maximum values", () => {
+      const rgb = new HCL(1000, 1000, 1000);
+      expect(rgb.H).toBe(360);
+      expect(rgb.C).toBe(1);
+      expect(rgb.L).toBe(1);
+    });
+
+    it("Handles invalid argument types", () => {
+      const rgb = new HCL("a", "b", "c");
+      expect(rgb.H).toBe(0);
+      expect(rgb.C).toBe(0);
+      expect(rgb.L).toBe(0);
+    });
+  });
+});
 
 describe("RGB to HEX conversion", () => {
   let rgb, hex;
@@ -21,60 +113,6 @@ describe("RGB to HEX conversion", () => {
     rgb = new RGB(127, 127, 127);
     hex = rgb_to_hex(rgb);
     expect(hex).toBe("7F7F7F");
-  });
-
-  it("Handles invalid red type", () => {
-    rgb = new RGB("hello", 255, 255);
-    hex = rgb_to_hex(rgb);
-    expect(hex).toBe("00FFFF");
-  });
-
-  it("Handles invalid green type", () => {
-    rgb = new RGB(255, "hello", 255);
-    hex = rgb_to_hex(rgb);
-    expect(hex).toBe("FF00FF");
-  });
-
-  it("Handles invalid blue type", () => {
-    rgb = new RGB(255, 255, "hello");
-    hex = rgb_to_hex(rgb);
-    expect(hex).toBe("FFFF00");
-  });
-
-  it("Handles invalid red < 0", () => {
-    rgb = new RGB(-1, 255, 255);
-    hex = rgb_to_hex(rgb);
-    expect(hex).toBe("00FFFF");
-  });
-
-  it("Handles invalid red > 255", () => {
-    rgb = new RGB(256, 255, 255);
-    hex = rgb_to_hex(rgb);
-    expect(hex).toBe("FFFFFF");
-  });
-
-  it("Handles invalid green < 0", () => {
-    rgb = new RGB(255, -1, 255);
-    hex = rgb_to_hex(rgb);
-    expect(hex).toBe("FF00FF");
-  });
-
-  it("Handles invalid green > 255", () => {
-    rgb = new RGB(255, 256, 255);
-    hex = rgb_to_hex(rgb);
-    expect(hex).toBe("FFFFFF");
-  });
-
-  it("Handles invalid blue < 0", () => {
-    rgb = new RGB(255, 255, -1);
-    hex = rgb_to_hex(rgb);
-    expect(hex).toBe("FFFF00");
-  });
-
-  it("Handles invalid blue > 255", () => {
-    rgb = new RGB(255, 255, 256);
-    hex = rgb_to_hex(rgb);
-    expect(hex).toBe("FFFFFF");
   });
 });
 

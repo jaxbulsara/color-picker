@@ -3,9 +3,21 @@
 // Types
 
 export function RGB(R, G, B) {
-  this.R = R;
-  this.G = G;
-  this.B = B;
+  this.R = normalize(R, 0, 255, 0);
+  this.G = normalize(G, 0, 255, 0);
+  this.B = normalize(B, 0, 255, 0);
+}
+
+export function HSV(H, S, V) {
+  this.H = normalize(H, 0, 360, 0);
+  this.S = normalize(S, 0, 1, 0);
+  this.V = normalize(V, 0, 1, 0);
+}
+
+export function HCL(H, C, L) {
+  this.H = normalize(H, 0, 360, 0);
+  this.C = normalize(C, 0, 1, 0);
+  this.L = normalize(L, 0, 1, 0);
 }
 
 // Defaults
@@ -35,32 +47,22 @@ export function hex_to_rgb(hex) {
     if (!short || short.length < 1) return DEFAULT_RGB;
 
     const shortChunks = short[0].match(/./g);
-    chunks[0] = shortChunks[0].repeat(2);
-    chunks[1] = shortChunks[1].repeat(2);
-    chunks[2] = shortChunks[2].repeat(2);
+    chunks = shortChunks.map((h) => h.repeat(2));
   }
 
-  const R = parseInt(chunks[0], 16);
-  const G = parseInt(chunks[1], 16);
-  const B = parseInt(chunks[2], 16);
+  const rgb = chunks.map((c) => parseInt(c, 16));
 
-  return new RGB(R, G, B);
+  return new RGB(...rgb);
 }
 
 // Helpers
 
+function normalize(value, min, max, default_) {
+  const num = new Number(value);
+  if (isNaN(num)) return default_;
+  return Math.min(max, Math.max(min, num));
+}
+
 function toHexString(int) {
-  let hex;
-
-  if (!Number.isInteger(int)) {
-    hex = "00";
-  } else if (int < 0) {
-    hex = "00";
-  } else if (int > 255) {
-    hex = "FF";
-  } else {
-    hex = int.toString(16).toUpperCase().padStart(2, "0");
-  }
-
-  return hex;
+  return int.toString(16).toUpperCase().padStart(2, "0");
 }
