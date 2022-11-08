@@ -119,8 +119,6 @@ export function calculateLuminanceFromHSV(hsv) {
   const H_prime = calculateHPrime(hsv.H);
   const V_squared = hsv.V ** 2;
 
-  console.log("Got constants", A, B, C);
-
   return Math.sqrt(
     A * V_squared +
       B * V_squared * (hsv.S * (H_prime - 1) + 1) ** 2 +

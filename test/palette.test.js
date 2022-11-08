@@ -279,9 +279,7 @@ describe("HCL helpers", () => {
 
     test.each(hsv_cases)("Calculate HSV %s", (color, H, S, V, L) => {
       hsv = new HSV(H, S, V);
-      console.log("Created hsv", hsv);
       lum = calculateLuminanceFromHSV(hsv);
-      console.log("Got lum", lum);
       expect(lum).toBeCloseTo(L);
     });
   });
