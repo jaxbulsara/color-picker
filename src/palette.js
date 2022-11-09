@@ -126,12 +126,12 @@ export function calculateLuminanceFromHSV(hsv) {
   );
 }
 
-export function calculateValueCutoff(H) {
+export function calculateLuminanceCutoff(H) {
   const hsv = new HSV(H, 1, 1);
   return calculateLuminanceFromHSV(hsv);
 }
 
-export function calculateSaturationBoundary(H, L) {
+export function calculateChromaBoundary(H, L) {
   const [A, B, C] = getLuminanceConstants(H);
   const H_prime = calculateHPrime(H);
 
@@ -150,6 +150,14 @@ export function calculateSaturationBoundary(H, L) {
   if (Math.abs(radicand) < 1e-10) radicand = 0;
 
   return (T1 - Math.sqrt(radicand)) / T5;
+}
+
+export function calculateChroma(H, S, L) {
+  const boundary = calculateChromaBoundary(H, L);
+
+  if (Math.abs(boundary) < 1e-10) return 0;
+
+  return S / boundary;
 }
 
 // Helpers

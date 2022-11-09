@@ -10,8 +10,9 @@ import {
   hsv_to_rgb,
   calculateLuminanceFromRGB,
   calculateLuminanceFromHSV,
-  calculateValueCutoff,
-  calculateSaturationBoundary,
+  calculateLuminanceCutoff,
+  calculateChromaBoundary,
+  calculateChroma,
 } from "../src/palette.js";
 
 describe("Color types", () => {
@@ -286,8 +287,8 @@ describe("HCL helpers", () => {
     });
   });
 
-  describe("Value cutoff calculation", () => {
-    let V_0;
+  describe("Luminance cutoff calculation", () => {
+    let L_0;
 
     const cases = [
       ["red", 0, 0.546809],
@@ -299,13 +300,13 @@ describe("HCL helpers", () => {
     ];
 
     test.each(cases)("Calculates %s", (color, H, expected) => {
-      V_0 = calculateValueCutoff(H);
-      expect(V_0).toBeCloseTo(expected);
+      L_0 = calculateLuminanceCutoff(H);
+      expect(L_0).toBeCloseTo(expected);
     });
   });
 
-  describe("Saturation boundary calculation", () => {
-    let S, L;
+  describe("Chroma boundary calculation", () => {
+    let C, L;
 
     const cutoffCases = [
       ["red", 0, 1],
@@ -335,23 +336,76 @@ describe("HCL helpers", () => {
     ];
 
     test.each(cutoffCases)("Calculates %s at cutoff", (color, H, expected) => {
-      L = calculateValueCutoff(H);
-      S = calculateSaturationBoundary(H, L);
-      expect(S).toBeCloseTo(expected);
+      L = calculateLuminanceCutoff(H);
+      C = calculateChromaBoundary(H, L);
+      expect(C).toBeCloseTo(expected);
     });
 
     test.each(midwayCases)("Calculates %s midway", (color, H, expected) => {
-      L = 1 - (1 - calculateValueCutoff(H)) / 2;
-      S = calculateSaturationBoundary(H, L);
-      expect(S).toBeCloseTo(expected);
+      L = 1 - (1 - calculateLuminanceCutoff(H)) / 2;
+      C = calculateChromaBoundary(H, L);
+      expect(C).toBeCloseTo(expected);
     });
 
     test.each(upperCases)(
       "Calculates %s at upper bound",
       (color, H, expected) => {
         L = 1;
-        S = calculateSaturationBoundary(H, L);
-        expect(S).toBeCloseTo(expected);
+        C = calculateChromaBoundary(H, L);
+        expect(C).toBeCloseTo(expected);
+      }
+    );
+  });
+
+  describe("Chroma calculation", () => {
+    let L, C;
+
+    const cutoffCases = [
+      ["red", 0, 0, 0],
+      ["red", 0.5, 0, 0.5],
+      ["red", 1, 0, 1],
+    ];
+
+    const midwayCases = [
+      ["red", 0, 0, 0],
+      ["red", 0.1733685, 0, 0.5],
+      ["red", 0.346737, 0, 1],
+    ];
+
+    const upperCases = [
+      ["red", 0, 0],
+      ["yellow", 60, 0],
+      ["green", 120, 0],
+      ["cyan", 180, 0],
+      ["blue", 240, 0],
+      ["magenta", 300, 0],
+    ];
+
+    test.each(cutoffCases)(
+      "Calculates %s, S=%f at cutoff",
+      (color, S, H, expected) => {
+        L = calculateLuminanceCutoff(H);
+        C = calculateChroma(H, S, L);
+        expect(C).toBeCloseTo(expected);
+      }
+    );
+
+    test.each(midwayCases)(
+      "Calculates %s, S=%f midway",
+      (color, S, H, expected) => {
+        L = 1 - (1 - calculateLuminanceCutoff(H)) / 2;
+        C = calculateChroma(H, S, L);
+        expect(C).toBeCloseTo(expected);
+      }
+    );
+
+    test.each(upperCases)(
+      "Calculates %s at upper bound",
+      (color, H, expected) => {
+        const S = 0;
+        L = 1;
+        C = calculateChroma(H, S, L);
+        expect(C).toBeCloseTo(expected);
       }
     );
   });
