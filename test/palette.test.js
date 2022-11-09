@@ -10,6 +10,7 @@ import {
   hsv_to_rgb,
   calculateLuminanceFromRGB,
   calculateLuminanceFromHSV,
+  calculateValueCutoff,
 } from "../src/palette.js";
 
 describe("Color types", () => {
@@ -281,6 +282,24 @@ describe("HCL helpers", () => {
       hsv = new HSV(H, S, V);
       lum = calculateLuminanceFromHSV(hsv);
       expect(lum).toBeCloseTo(L);
+    });
+  });
+
+  describe("Value cutoff calculation", () => {
+    let V_0;
+
+    const cases = [
+      ["red", 0, 0.546809],
+      ["yellow", 60, 0.941276],
+      ["green", 120, 0.766159],
+      ["cyan", 180, 0.837259],
+      ["blue", 240, 0.337639],
+      ["magenta", 300, 0.642651],
+    ];
+
+    test.each(cases)("Calculates %s", (color, H, expected) => {
+      V_0 = calculateValueCutoff(H);
+      expect(V_0).toBeCloseTo(expected);
     });
   });
 });

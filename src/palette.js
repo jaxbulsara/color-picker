@@ -126,6 +126,11 @@ export function calculateLuminanceFromHSV(hsv) {
   );
 }
 
+export function calculateValueCutoff(H) {
+  const hsv = new HSV(H, 1, 1);
+  return calculateLuminanceFromHSV(hsv);
+}
+
 // Helpers
 
 function normalizeNumber(value, min, max, default_ = 0) {
