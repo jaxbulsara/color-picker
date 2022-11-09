@@ -297,7 +297,7 @@ describe("HCL helpers", () => {
       ["magenta", 300, 0.642651],
     ];
 
-    test.each(cases)("Calculates %s", (color, H, expected) => {
+    test.each(cases)("Calculate %s", (color, H, expected) => {
       V_0 = calculateValueCutoff(H);
       expect(V_0).toBeCloseTo(expected);
     });
