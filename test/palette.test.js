@@ -14,6 +14,7 @@ import {
   calculateChromaBoundary,
   calculateChroma,
   calculateValue,
+  calculateSaturation,
 } from "../src/palette.js";
 
 describe("Color types", () => {
@@ -431,5 +432,57 @@ describe("HCL helpers", () => {
       val = calculateValue(H, S, L);
       expect(val).toBeCloseTo(V);
     });
+  });
+
+  describe("Saturation calculation", () => {
+    let hcl, L, S;
+
+    const cutoffCases = [
+      ["red", 0, 0, 0],
+      ["red", 0.5, 0, 0.5],
+      ["red", 1, 0, 1],
+    ];
+
+    const midwayCases = [
+      ["red", 0, 0, 0],
+      ["red", 0.5, 0, 0.1733685],
+      ["red", 1, 0, 0.346737],
+    ];
+
+    const upperCases = [
+      ["red", 0, 0, 0],
+      ["red", 0.5, 0, 0],
+      ["red", 1, 0, 0],
+    ];
+
+    test.each(cutoffCases)(
+      "Calculates %s, C=%f at cutoff",
+      (color, C, H, expected) => {
+        L = calculateLuminanceCutoff(H);
+        hcl = new HCL(H, C, L);
+        S = calculateSaturation(hcl);
+        expect(S).toBeCloseTo(expected);
+      }
+    );
+
+    test.each(midwayCases)(
+      "Calculates %s, C=%f midway",
+      (color, C, H, expected) => {
+        L = 1 - (1 - calculateLuminanceCutoff(H)) / 2;
+        hcl = new HCL(H, C, L);
+        S = calculateSaturation(hcl);
+        expect(S).toBeCloseTo(expected);
+      }
+    );
+
+    test.each(upperCases)(
+      "Calculates %s, C=%f at upper bound",
+      (color, C, H, expected) => {
+        L = 1;
+        hcl = new HCL(H, C, L);
+        S = calculateSaturation(hcl);
+        expect(S).toBeCloseTo(expected);
+      }
+    );
   });
 });

@@ -145,6 +145,11 @@ export function calculateChroma(H, S, L) {
   return S / boundary;
 }
 
+export function calculateSaturation(hcl) {
+  const boundary = calculateChromaBoundary(hcl.H, hcl.L);
+  return hcl.C * boundary;
+}
+
 export function calculateChromaBoundary(H, L) {
   const [A, B, C] = getLuminanceConstants(H);
   const H_prime = calculateHPrime(H);
