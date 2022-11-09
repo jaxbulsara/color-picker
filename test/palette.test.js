@@ -13,6 +13,7 @@ import {
   calculateLuminanceCutoff,
   calculateChromaBoundary,
   calculateChroma,
+  calculateValue,
 } from "../src/palette.js";
 
 describe("Color types", () => {
@@ -408,5 +409,27 @@ describe("HCL helpers", () => {
         expect(C).toBeCloseTo(expected);
       }
     );
+  });
+
+  describe("Value calculation", () => {
+    let val;
+
+    const cases = [
+      ["black", 0, 0, 0, 0],
+      ["grey", 0, 0, 0.498039, 0.498039],
+      ["white", 0, 0, 1, 1],
+      ["red", 0, 0.9, 1, 0.553182],
+      ["yellow", 60, 0.9, 1, 0.941881],
+      ["green", 120, 0.9, 1, 0.76885],
+      ["cyan", 180, 0.9, 1, 0.839041],
+      ["blue", 240, 0.9, 1, 0.350514],
+      ["magenta", 300, 0.9, 1, 0.647202],
+      ["red 360", 360, 0.9, 1, 0.553182],
+    ];
+
+    test.each(cases)("Calculates %s", (color, H, S, V, L) => {
+      val = calculateValue(H, S, L);
+      expect(val).toBeCloseTo(V);
+    });
   });
 });
