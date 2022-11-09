@@ -11,6 +11,7 @@ import {
   calculateLuminanceFromRGB,
   calculateLuminanceFromHSV,
   calculateValueCutoff,
+  calculateSaturationBoundary,
 } from "../src/palette.js";
 
 describe("Color types", () => {
@@ -301,5 +302,57 @@ describe("HCL helpers", () => {
       V_0 = calculateValueCutoff(H);
       expect(V_0).toBeCloseTo(expected);
     });
+  });
+
+  describe("Saturation boundary calculation", () => {
+    let S, L;
+
+    const cutoffCases = [
+      ["red", 0, 1],
+      ["yellow", 60, 1],
+      ["green", 120, 1],
+      ["cyan", 180, 1],
+      ["blue", 240, 1],
+      ["magenta", 300, 1],
+    ];
+
+    const midwayCases = [
+      ["red", 0, 0.346737],
+      ["yellow", 60, 0.298272],
+      ["green", 120, 0.316701],
+      ["cyan", 180, 0.308732],
+      ["blue", 240, 0.386643],
+      ["magenta", 300, 0.332458],
+    ];
+
+    const upperCases = [
+      ["red", 0, 0],
+      ["yellow", 60, 0],
+      ["green", 120, 0],
+      ["cyan", 180, 0],
+      ["blue", 240, 0],
+      ["magenta", 300, 0],
+    ];
+
+    test.each(cutoffCases)("Calculates %s at cutoff", (color, H, expected) => {
+      L = calculateValueCutoff(H);
+      S = calculateSaturationBoundary(H, L);
+      expect(S).toBeCloseTo(expected);
+    });
+
+    test.each(midwayCases)("Calculates %s midway", (color, H, expected) => {
+      L = 1 - (1 - calculateValueCutoff(H)) / 2;
+      S = calculateSaturationBoundary(H, L);
+      expect(S).toBeCloseTo(expected);
+    });
+
+    test.each(upperCases)(
+      "Calculates %s at upper bound",
+      (color, H, expected) => {
+        L = 1;
+        S = calculateSaturationBoundary(H, L);
+        expect(S).toBeCloseTo(expected);
+      }
+    );
   });
 });

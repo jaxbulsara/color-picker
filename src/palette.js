@@ -131,6 +131,27 @@ export function calculateValueCutoff(H) {
   return calculateLuminanceFromHSV(hsv);
 }
 
+export function calculateSaturationBoundary(H, L) {
+  const [A, B, C] = getLuminanceConstants(H);
+  const H_prime = calculateHPrime(H);
+
+  const Hm1_2 = (H_prime - 1) ** 2;
+  const L_2 = L ** 2;
+  const H_2 = H_prime ** 2;
+
+  const T1 = -H_prime * B + B + C;
+  const T2 = C * L_2;
+  const T3 = -A * (B * Hm1_2 + C);
+  const T4 = B * (Hm1_2 * L_2 - C * H_2);
+  const T5 = B * Hm1_2 + C;
+
+  let radicand = T2 + T3 + T4;
+
+  if (Math.abs(radicand) < 1e-10) radicand = 0;
+
+  return (T1 - Math.sqrt(radicand)) / T5;
+}
+
 // Helpers
 
 function normalizeNumber(value, min, max, default_ = 0) {
