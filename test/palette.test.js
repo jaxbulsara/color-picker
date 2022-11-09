@@ -278,7 +278,7 @@ describe("HCL helpers", () => {
       expect(lum).toBeCloseTo(L);
     });
 
-    test.each(hsv_cases)("Calculate HSV %s", (color, H, S, V, L) => {
+    test.each(hsv_cases)("Calculates HSV %s", (color, H, S, V, L) => {
       hsv = new HSV(H, S, V);
       lum = calculateLuminanceFromHSV(hsv);
       expect(lum).toBeCloseTo(L);
@@ -297,7 +297,7 @@ describe("HCL helpers", () => {
       ["magenta", 300, 0.642651],
     ];
 
-    test.each(cases)("Calculate %s", (color, H, expected) => {
+    test.each(cases)("Calculates %s", (color, H, expected) => {
       V_0 = calculateValueCutoff(H);
       expect(V_0).toBeCloseTo(expected);
     });
