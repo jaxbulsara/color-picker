@@ -4,10 +4,10 @@ import {
   RGB,
   HSV,
   HCL,
-  rgb_to_hex,
-  hex_to_rgb,
-  rgb_to_hsv,
-  hsv_to_rgb,
+  RGBtoHEX,
+  HEXtoRGB,
+  RGBtoHSV,
+  HSVtoRGB,
   calculateLuminanceFromRGB,
   calculateLuminanceFromHSV,
   calculateLuminanceCutoff,
@@ -140,10 +140,10 @@ describe("RGB to HEX conversion", () => {
 
   test.each(cases)("Converts %s", (color, R, G, B, expected) => {
     rgb = new RGB(R, G, B);
-    hex = rgb_to_hex(rgb);
+    hex = RGBtoHEX(rgb);
     expect(hex).toBe(expected);
 
-    rgb_rev = hex_to_rgb(hex);
+    rgb_rev = HEXtoRGB(hex);
     expectColorsToBeEqual(rgb, rgb_rev);
   });
 });
@@ -176,24 +176,24 @@ describe("HEX to RGB conversion", () => {
   ];
 
   test.each(cases)("Converts %s", (name, hex, R, G, B, reverse) => {
-    rgb = hex_to_rgb(hex);
+    rgb = HEXtoRGB(hex);
     expect(rgb.R).toBe(R);
     expect(rgb.G).toBe(G);
     expect(rgb.B).toBe(B);
 
-    hex_rev = rgb_to_hex(rgb);
+    hex_rev = RGBtoHEX(rgb);
     expect(hex_rev).toBe(reverse);
   });
 
   it("Handles invalid hex string", () => {
     hex = "not_a_hex";
-    rgb = hex_to_rgb(hex);
+    rgb = HEXtoRGB(hex);
     expect(rgb).toBeNaN();
   });
 
   it("Handles invalid hex type", () => {
     hex = 0;
-    rgb = hex_to_rgb(hex);
+    rgb = HEXtoRGB(hex);
     expect(rgb).toBeNaN();
   });
 });
@@ -212,12 +212,12 @@ describe("RGB to HSV conversion", () => {
 
   test.each(cases)("Converts %s", (color, R, G, B, H, S, V) => {
     rgb = new RGB(R, G, B);
-    hsv = rgb_to_hsv(rgb);
+    hsv = RGBtoHSV(rgb);
     expect(hsv.H).toBeCloseTo(H);
     expect(hsv.S).toBeCloseTo(S);
     expect(hsv.V).toBeCloseTo(V);
 
-    rgb_rev = hsv_to_rgb(hsv);
+    rgb_rev = HSVtoRGB(hsv);
     expectColorsToBeEqual(rgb, rgb_rev);
   });
 });
@@ -240,12 +240,12 @@ describe("HSV to RGB conversion", () => {
 
   test.each(cases)("Converts %s", (color, H, S, V, R, G, B) => {
     hsv = new HSV(H, S, V);
-    rgb = hsv_to_rgb(hsv);
+    rgb = HSVtoRGB(hsv);
     expect(rgb.R).toBeCloseTo(R);
     expect(rgb.G).toBeCloseTo(G);
     expect(rgb.B).toBeCloseTo(B);
 
-    hsv_rev = rgb_to_hsv(rgb);
+    hsv_rev = RGBtoHSV(rgb);
     expectColorsToBeEqual(hsv, hsv_rev);
   });
 });

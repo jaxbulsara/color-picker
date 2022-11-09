@@ -32,13 +32,13 @@ const C_B = 0.114;
 
 // Functions
 
-export function rgb_to_hex(rgb) {
+export function RGBtoHEX(rgb) {
   return rgb
     .toArray()
     .reduce((previous, current) => previous.concat(toHexString(current)), "");
 }
 
-export function hex_to_rgb(hex) {
+export function HEXtoRGB(hex) {
   if (!(typeof hex == "string" || hex instanceof String)) return DEFAULT_RGB;
 
   let chunks = hex.match(/[A-Fa-f0-9]{2}/g);
@@ -59,7 +59,7 @@ export function hex_to_rgb(hex) {
   return new RGB(...rgb);
 }
 
-export function rgb_to_hsv(rgb) {
+export function RGBtoHSV(rgb) {
   let H, S, V;
 
   // Calculate constants
@@ -96,7 +96,7 @@ export function rgb_to_hsv(rgb) {
   return new HSV(H, S, V);
 }
 
-export function hsv_to_rgb(hsv) {
+export function HSVtoRGB(hsv) {
   // Calculate constants
   const C = hsv.V * hsv.S;
   const X = C * calculateHPrime(hsv.H);
