@@ -134,11 +134,6 @@ export function calculateValue(H, S, L) {
   return L / L_boundary;
 }
 
-export function calculateLuminanceCutoff(H) {
-  const hsv = new HSV(H, 1, 1);
-  return calculateLuminanceFromHSV(hsv);
-}
-
 export function calculateChroma(H, S, L) {
   const cutoff = calculateLuminanceCutoff(H);
   if (L <= cutoff) return S;
@@ -156,6 +151,11 @@ export function calculateSaturation(hcl) {
 
   const boundary = calculateChromaBoundary(hcl.H, hcl.L);
   return hcl.C * boundary;
+}
+
+export function calculateLuminanceCutoff(H) {
+  const hsv = new HSV(H, 1, 1);
+  return calculateLuminanceFromHSV(hsv);
 }
 
 export function calculateChromaBoundary(H, L) {
