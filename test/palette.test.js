@@ -319,7 +319,7 @@ describe("HCL helpers", () => {
       ["magenta", 300, 1],
     ];
 
-    const midwayCases = [
+    const midpointCases = [
       ["red", 0, 0.346737],
       ["yellow", 60, 0.298272],
       ["green", 120, 0.316701],
@@ -343,7 +343,7 @@ describe("HCL helpers", () => {
       expect(C).toBeCloseTo(expected);
     });
 
-    test.each(midwayCases)("Calculates %s midway", (color, H, expected) => {
+    test.each(midpointCases)("Calculates %s midway", (color, H, expected) => {
       L = 1 - (1 - calculateLuminanceCutoff(H)) / 2;
       C = calculateChromaBoundary(H, L);
       expect(C).toBeCloseTo(expected);
@@ -368,7 +368,7 @@ describe("HCL helpers", () => {
       ["red", 1, 0, 1],
     ];
 
-    const midwayCases = [
+    const midpointCases = [
       ["red", 0, 0, 0],
       ["red", 0.1733685, 0, 0.5],
       ["red", 0.346737, 0, 1],
@@ -383,6 +383,11 @@ describe("HCL helpers", () => {
       ["magenta", 300, 0],
     ];
 
+    it("Calculates red below cutoff", () => {
+      C = calculateChroma(0, 0.5, 0.1);
+      expect(C).toBe(0.5);
+    });
+
     test.each(cutoffCases)(
       "Calculates %s, S=%f at cutoff",
       (color, S, H, expected) => {
@@ -392,8 +397,8 @@ describe("HCL helpers", () => {
       }
     );
 
-    test.each(midwayCases)(
-      "Calculates %s, S=%f midway",
+    test.each(midpointCases)(
+      "Calculates %s, S=%f at midpoint",
       (color, S, H, expected) => {
         L = 1 - (1 - calculateLuminanceCutoff(H)) / 2;
         C = calculateChroma(H, S, L);
@@ -443,7 +448,7 @@ describe("HCL helpers", () => {
       ["red", 1, 0, 1],
     ];
 
-    const midwayCases = [
+    const midpointCases = [
       ["red", 0, 0, 0],
       ["red", 0.5, 0, 0.1733685],
       ["red", 1, 0, 0.346737],
@@ -455,6 +460,12 @@ describe("HCL helpers", () => {
       ["red", 1, 0, 0],
     ];
 
+    it("Calculates red below cutoff", () => {
+      hcl = new HCL(0, 0.5, 0.1);
+      S = calculateSaturation(hcl);
+      expect(S).toBe(0.5);
+    });
+
     test.each(cutoffCases)(
       "Calculates %s, C=%f at cutoff",
       (color, C, H, expected) => {
@@ -465,8 +476,8 @@ describe("HCL helpers", () => {
       }
     );
 
-    test.each(midwayCases)(
-      "Calculates %s, C=%f midway",
+    test.each(midpointCases)(
+      "Calculates %s, C=%f at midpoint",
       (color, C, H, expected) => {
         L = 1 - (1 - calculateLuminanceCutoff(H)) / 2;
         hcl = new HCL(H, C, L);

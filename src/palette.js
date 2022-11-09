@@ -108,6 +108,8 @@ export function hsv_to_rgb(hsv) {
   return new RGB(...rgb);
 }
 
+// HCL Helpers
+
 export function calculateLuminanceFromRGB(rgb) {
   return (
     Math.sqrt(C_R * rgb.R ** 2 + C_G * rgb.G ** 2 + C_B * rgb.B ** 2) / 255
@@ -138,6 +140,9 @@ export function calculateLuminanceCutoff(H) {
 }
 
 export function calculateChroma(H, S, L) {
+  const cutoff = calculateLuminanceCutoff(H);
+  if (L <= cutoff) return S;
+
   const boundary = calculateChromaBoundary(H, L);
 
   if (Math.abs(boundary) < 1e-10) return 0;
@@ -146,6 +151,9 @@ export function calculateChroma(H, S, L) {
 }
 
 export function calculateSaturation(hcl) {
+  const cutoff = calculateLuminanceCutoff(hcl.H);
+  if (hcl.L <= cutoff) return hcl.C;
+
   const boundary = calculateChromaBoundary(hcl.H, hcl.L);
   return hcl.C * boundary;
 }
