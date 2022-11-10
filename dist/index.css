@@ -21,6 +21,23 @@ body {
   height: 256px;
   margin-bottom: 0.5em;
   border: 1px solid black;
+  position: relative;
+}
+
+.color-square__x-cursor {
+  height: 256px;
+  width: 1px;
+  background: white;
+  position: absolute;
+  left: 0px;
+}
+
+.color-square__y-cursor {
+  width: 256px;
+  height: 1px;
+  background: white;
+  position: absolute;
+  bottom: 255px;
 }
 
 .color-slider {
@@ -28,6 +45,18 @@ body {
   width: 256px;
   height: 10px;
   border: 1px solid black;
+  position: relative;
+}
+
+.color-slider__cursor {
+  width: 3px;
+  height: 16px;
+  background: white;
+  border: 1px solid black;
+  position: absolute;
+  top: -4px;
+  left: -2px;
+  cursor: pointer;
 }
 
 .color-monitor span {
