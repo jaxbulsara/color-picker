@@ -30,6 +30,47 @@ const C_R = 0.299;
 const C_G = 0.587;
 const C_B = 0.114;
 
+// Color object
+
+function Color(hex, rgb, hsv, hcl) {
+  this.hex = hex;
+  this.rgb = rgb;
+  this.hsv = hsv;
+  this.hcl = hcl;
+}
+
+export function colorFromHex(hex) {
+  const rgb = HEXtoRGB(hex);
+  const hsv = RGBtoHSV(rgb);
+  const hcl = HSVtoHCL(hsv);
+
+  return new Color(hex, rgb, hsv, hcl);
+}
+
+export function colorFromRGB(rgb) {
+  const hex = RGBtoHEX(rgb);
+  const hsv = RGBtoHSV(rgb);
+  const hcl = HSVtoHCL(hsv);
+
+  return new Color(hex, rgb, hsv, hcl);
+}
+
+export function colorFromHSV(hsv) {
+  const rgb = HSVtoRGB(hsv);
+  const hex = RGBtoHEX(rgb);
+  const hcl = HSVtoHCL(hsv);
+
+  return new Color(hex, rgb, hsv, hcl);
+}
+
+export function colorFromHCL(hcl) {
+  const hsv = HCLtoHSV(hcl);
+  const rgb = HSVtoRGB(hsv);
+  const hex = RGBtoHEX(rgb);
+
+  return new Color(hex, rgb, hsv, hcl);
+}
+
 // Functions
 
 export function RGBtoHEX(rgb) {

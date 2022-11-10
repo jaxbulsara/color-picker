@@ -2,8 +2,32 @@ body {
   font-size: 20pt;
 }
 
+.root {
+  width: 600px;
+  margin: auto;
+  display: flex;
+}
+
+.color-picker {
+  width: 50%;
+}
+
 .color-monitor {
-  width: 9.5em;
+  width: 50%;
+}
+
+.color-square {
+  width: 256px;
+  height: 256px;
+  margin-bottom: 0.5em;
+  border: 1px solid black;
+}
+
+.color-slider {
+  display: flex;
+  width: 256px;
+  height: 10px;
+  border: 1px solid black;
 }
 
 .color-monitor span {
@@ -16,7 +40,21 @@ body {
   outline: 1px groove #777;
 }
 
+.color-display {
+  display: flex;
+  height: 2em;
+  margin-bottom: 0.5em;
+  border: 1px solid black;
+}
+
+.color-display__selected,
+.color-display__preview {
+  width: 50%;
+}
+
 .component-color {
+  width: 9.5em;
+  margin: auto;
   margin-bottom: 1em;
 }
 
@@ -43,6 +81,11 @@ body {
 
 .component-color__comma {
   text-align: left;
+}
+
+.hex-color {
+  width: 9.5em;
+  margin: auto;
 }
 
 .hex-color span {

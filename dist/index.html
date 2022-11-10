@@ -6,7 +6,16 @@
     <link rel="stylesheet" type="text/css" href="index.css" />
   </head>
   <body>
+    <div class="root">
+    <div class="color-picker">
+      <div class="color-square"><canvas id="color-square" height="1px" width="1px"></div>
+      <div class="color-slider"><canvas id="color-slider" height="1px" width="1px"></div>
+    </div>
     <div class="color-monitor">
+      <div class="color-display">
+        <div class="color-display__selected"><canvas id="color-selected" height="1px" width="1px"></div>
+        <div class="color-display__preview"><canvas id="color-preview" height="1px" width="1px"></div>
+      </div>
       <div class="component-color">
         <!-- prettier-ignore -->
         <div class="component-color__header"><span class="component-color__spacer"></span><span class="component-color__value">H</span><span class="component-color__spacer"></span><span class="component-color__value">C</span><span class="component-color__spacer"></span><span class="component-color__value">L</span><span class="component-color__spacer"></span></div>
@@ -29,6 +38,7 @@
         <span class="hex-color__label">HEX</span>
         <span class="hex-color__value" contenteditable="true">#000000</span>
       </div>
+    </div>
     </div>
     <script type="text/javascript" src="main.js"></script>
   </body>
