@@ -1,16 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Isoluminance Color Picker</title>
-    <link rel="stylesheet" type="text/css" href="index.css">
-</head>
-<body>
-    <div id="pickerWrapper">
-        <canvas id="picker" width="256" height="256"></canvas>
-        <div id="hoveredColor"></div>
-        <div id="selectedColor"></div>
+    <link rel="stylesheet" type="text/css" href="index.css" />
+  </head>
+  <body>
+    <div class="color-values-wrapper">
+      <div class="color-value-wrapper">
+        <!-- prettier-ignore -->
+        <div class="color-header"><span class="spacer"></span><span class="value">H</span><span class="spacer"></span><span class="value">C</span><span class="spacer"></span><span class="value">L</span><span class="spacer"></span></div>
+        <!-- prettier-ignore -->
+        <div class="color-value"><span class="open-paren spacer">(</span><span id="hcl-h-value" class="value" contenteditable="true">0</span><span class="comma spacer">, </span><span id="hcl-c-value" class="value" contenteditable="true">0</span><span class="comma spacer">, </span><span id="hcl-l-value" class="value" contenteditable="true">0</span><span class="close-paren spacer">)</span></div>
+      </div>
+      <div class="color-value-wrapper">
+        <!-- prettier-ignore -->
+        <div class="color-header"><span class="spacer"></span><span class="value">H</span><span class="spacer"></span><span class="value">S</span><span class="spacer"></span><span class="value">V</span><span class="spacer"></span></div>
+        <!-- prettier-ignore -->
+        <div class="color-value"><span class="open-paren spacer">(</span><span id="hsv-h-value" class="value" contenteditable="true">0</span><span class="comma spacer">, </span><span id="hsv-s-value" class="value" contenteditable="true">0</span><span class="comma spacer">, </span><span id="hsv-v-value" class="value" contenteditable="true">0</span><span class="close-paren spacer">)</span></div>
+      </div>
+      <div class="color-value-wrapper">
+        <!-- prettier-ignore -->
+        <div class="color-header"><span class="spacer"></span><span class="value">R</span><span class="spacer"></span><span class="value">G</span><span class="spacer"></span><span class="value">B</span><span class="spacer"></span></div>
+        <!-- prettier-ignore -->
+        <div class="color-value"><span class="open-paren spacer">(</span><span id="rgb-r-value" class="value" contenteditable="true">0</span><span class="comma spacer">, </span><span id="rgb-g-value" class="value" contenteditable="true">0</span><span class="comma spacer">, </span><span id="rgb-b-value" class="value" contenteditable="true">0</span><span class="close-paren spacer">)</span></div>
+      </div>
+      <div class="hex-value-wrapper">
+        <span class="hex-label">HEX</span>
+        <span class="hex-value" contenteditable="true">#000000</span>
+      </div>
     </div>
     <script type="text/javascript" src="main.js"></script>
-</body>
+  </body>
 </html>

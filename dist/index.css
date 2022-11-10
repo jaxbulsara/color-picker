@@ -1,9 +1,60 @@
-#pickerWrapper {
-  display: flex;
+body {
+  font-size: 20pt;
 }
 
-#hoveredColor,
-#selectedColor {
-  width: 128px;
-  height: 256px;
+[contenteditable="true"]:active,
+[contenteditable="true"]:focus {
+  border: none;
+  outline: 1px solid #777;
+}
+
+.color-values-wrapper {
+  width: 9.5em;
+}
+
+.color-value-wrapper {
+  margin-bottom: 1em;
+}
+
+.color-value-wrapper span {
+  display: inline-block;
+}
+
+.color-header {
+  color: #777;
+}
+
+.value {
+  width: 2.5em;
+  text-align: center;
+}
+
+.spacer {
+  width: 0.5em;
+}
+
+.open-paren {
+  text-align: right;
+}
+
+.close-paren {
+  text-align: left;
+}
+
+.comma {
+  text-align: left;
+}
+
+.hex-value-wrapper span {
+  display: inline-block;
+}
+
+.hex-label {
+  width: 3em;
+  color: #777;
+}
+
+.hex-value {
+  width: 6em;
+  text-align: center;
 }
