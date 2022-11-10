@@ -8,6 +8,8 @@ import {
   HEXtoRGB,
   RGBtoHSV,
   HSVtoRGB,
+  HSVtoHCL,
+  HCLtoHSV,
   calculateLuminanceFromRGB,
   calculateLuminanceFromHSV,
   calculateLuminanceCutoff,
@@ -495,5 +497,40 @@ describe("HCL helpers", () => {
         expect(S).toBeCloseTo(expected);
       }
     );
+  });
+});
+
+describe("HSV to HCL conversion", () => {
+  let hsv, hcl, hsv_rev;
+
+  const cases = [
+    ["black", 0, 0, 0, 0, 0, 0],
+    ["grey", 0, 0, 0.5, 0, 0, 0.5],
+    ["white", 0, 0, 1, 0, 0, 1],
+    ["dark red", 0, 0.9, 0.5, 0, 0.9, 0.276591],
+    ["light red", 0, 0.5, 0.9, 0, 0.767469, 0.619792],
+    ["dark yellow", 60, 0.9, 0.5, 60, 0.9, 0.470941],
+    ["light yellow", 60, 0.5, 0.99, 60, 0.714905, 0.946732],
+    ["dark green", 120, 0.9, 0.5, 120, 0.9, 0.384425],
+    ["light green", 120, 0.5, 0.95, 120, 0.709257, 0.789272],
+    ["dark cyan", 180, 0.9, 0.5, 180, 0.9, 0.419521],
+    ["light cyan", 180, 0.5, 0.99, 180, 0.901529, 0.871959],
+    ["dark blue", 240, 0.9, 0.5, 240, 0.9, 0.175257],
+    ["light blue", 240, 0.5, 0.9, 240, 0.864996, 0.521301],
+    ["dark magenta", 300, 0.9, 0.5, 300, 0.9, 0.323601],
+    ["light magenta", 300, 0.5, 0.9, 300, 0.677815, 0.673348],
+  ];
+
+  test.each(cases)("Converts %s", (color, H, S, V, H2, C, L) => {
+    hsv = new HSV(H, S, V);
+    hcl = HSVtoHCL(hsv);
+    expect(hcl.H).toBe(H2);
+    expect(hcl.C).toBeCloseTo(C);
+    expect(hcl.L).toBeCloseTo(L);
+
+    hsv_rev = HCLtoHSV(hcl);
+    expect(hsv_rev.H).toBe(H);
+    expect(hsv_rev.S).toBeCloseTo(S);
+    expect(hsv_rev.V).toBeCloseTo(V);
   });
 });

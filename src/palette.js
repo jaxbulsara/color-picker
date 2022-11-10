@@ -108,6 +108,18 @@ export function HSVtoRGB(hsv) {
   return new RGB(...rgb);
 }
 
+export function HSVtoHCL(hsv) {
+  const L = calculateLuminanceFromHSV(hsv);
+  const C = calculateChroma(hsv.H, hsv.S, L);
+  return new HCL(hsv.H, C, L);
+}
+
+export function HCLtoHSV(hcl) {
+  const S = calculateSaturation(hcl);
+  const V = calculateValue(hcl.H, S, hcl.L);
+  return new HSV(hcl.H, S, V);
+}
+
 // HCL Helpers
 
 export function calculateLuminanceFromRGB(rgb) {
