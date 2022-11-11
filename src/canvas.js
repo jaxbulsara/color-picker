@@ -1,11 +1,13 @@
 // Canvas transformation functions
 
-import { HCL, colorFromHCL } from "./palette.js";
+import { RGB, HCL, colorFromRGB, colorFromHCL } from "./palette.js";
 
-export function fillColor(canvas, R, G, B) {
+export function fillColor(canvas, color) {
   const context = getContext(canvas);
   const [width, height] = getDimensions(canvas);
   let imageData = context.createImageData(width, height);
+
+  const [R, G, B] = color.rgb.toArray();
 
   for (let x = 0; x < width; x++) {
     for (let y = 0; y < height; y++) {
@@ -16,7 +18,8 @@ export function fillColor(canvas, R, G, B) {
   context.putImageData(imageData, 0, 0);
 }
 
-export function fillSquareColor(canvas, C) {
+export function fillSquareColor(canvas, color) {
+  const C = color.hcl.C;
   let hcl = new HCL(0, C, 1);
 
   const context = getContext(canvas);
@@ -25,7 +28,7 @@ export function fillSquareColor(canvas, C) {
   const l_step = calculateStep(height, 1);
 
   let imageData = context.createImageData(width, height);
-  let color, rgb;
+  let rgb;
 
   for (let x = 0; x < width; x++) {
     for (let y = 0; y < height; y++) {
@@ -40,14 +43,15 @@ export function fillSquareColor(canvas, C) {
   context.putImageData(imageData, 0, 0);
 }
 
-export function fillSliderColor(canvas, H, L) {
+export function fillSliderColor(canvas, color) {
+  const [H, L] = [color.hcl.H, color.hcl.L];
   const context = getContext(canvas);
   const [width, height] = getDimensions(canvas);
   const step = calculateStep(width, 1);
 
   let imageData = context.createImageData(width, height);
 
-  let hcl, color, rgb;
+  let hcl, rgb;
 
   for (let x = 0; x < width; x++) {
     hcl = new HCL(H, x * step, L);
@@ -62,16 +66,12 @@ export function fillSliderColor(canvas, H, L) {
   context.putImageData(imageData, 0, 0);
 }
 
-export function setPreviewColor(event, squareCanvas, previewCanvas) {
-  const bounding = squareCanvas.getBoundingClientRect();
+export function getSquareColor(event, squareCanvas, x, y) {
   const context = getContext(squareCanvas);
-  const x = event.clientX - bounding.left;
-  const y = event.clientY - bounding.top;
 
   const pixel = context.getImageData(x, y, 1, 1);
   const [R, G, B] = pixel.data;
-
-  fillColor(previewCanvas, R, G, B);
+  return colorFromRGB(new RGB(R, G, B));
 }
 
 function getContext(canvas) {
