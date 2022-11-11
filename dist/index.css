@@ -39,7 +39,7 @@ body {
   height: 1px;
   background: white;
   position: absolute;
-  bottom: 255px;
+  bottom: 0px;
 }
 
 .color-slider {
