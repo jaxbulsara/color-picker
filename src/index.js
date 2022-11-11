@@ -3,61 +3,51 @@ import {
   fillColor,
   fillSquareColor,
   fillSliderColor,
-  previewColor,
+  setPreviewColor,
 } from "./canvas.js";
+
+// State
+
+let color;
+
+// Elements
 
 const square = document.getElementById("color-square");
 const slider = document.getElementById("color-slider");
 const selected = document.getElementById("color-selected");
 const preview = document.getElementById("color-preview");
 
+// Helpers
+
 function setDimensionsToParent(element) {
   element.width = element.parentNode.clientWidth;
   element.height = element.parentNode.clientHeight;
 }
 
-window.onload = function () {
-  const color = colorFromHCL(new HCL(0, 1, 0));
+// On page load
 
+window.onload = function () {
+  console.debug("Loading color picker");
+
+  console.debug("Setting canvas sizes");
   for (const canvas of [square, slider, selected, preview]) {
     setDimensionsToParent(canvas);
   }
 
+  color = colorFromHCL(new HCL(0, 1, 0));
+  const [R, G, B] = color.rgb.toArray();
+  const [H, C, L] = color.hcl.toArray();
+
   for (const canvas of [selected, preview]) {
-    fillColor(canvas, color.rgb.R, color.rgb.G, color.rgb.B);
+    fillColor(canvas, R, G, B);
   }
 
-  fillSquareColor(square, color.hcl.C);
-  fillSliderColor(slider, color.hcl.H, color.hcl.L);
+  fillSquareColor(square, C);
+  fillSliderColor(slider, H, L);
 };
 
-// const hoveredColor = document.getElementById("hoveredColor");
-// const selectedColor = document.getElementById("selectedColor");
-
-// function pick(event, destination) {
-//   const bounding = canvas.getBoundingClientRect();
-//   const x = event.clientX - bounding.left;
-//   const y = event.clientY - bounding.top;
-
-//   const pixel = context.getImageData(x, y, 1, 1);
-//   const data = pixel.data;
-//   const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${data[3]})`;
-
-//   destination.style.background = rgba;
-//   destination.textContent = rgba;
-
-//   return rgba;
-// }
-
-// function mouseOut(event, hovered, selected) {
-//   hovered.style.background = selected.style.background;
-//   hovered.textContent = selected.textContent;
-// }
+// Event listeners
 
 square.addEventListener("mousemove", (event) =>
-  previewColor(event, square, preview)
+  setPreviewColor(event, square, preview)
 );
-// canvas.addEventListener("click", (event) => pick(event, selectedColor));
-// canvas.addEventListener("mouseout", (event) =>
-//   mouseOut(event, hoveredColor, selectedColor)
-// );

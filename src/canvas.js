@@ -62,7 +62,7 @@ export function fillSliderColor(canvas, H, L) {
   context.putImageData(imageData, 0, 0);
 }
 
-export function previewColor(event, squareCanvas, previewCanvas) {
+export function setPreviewColor(event, squareCanvas, previewCanvas) {
   const bounding = squareCanvas.getBoundingClientRect();
   const context = getContext(squareCanvas);
   const x = event.clientX - bounding.left;
