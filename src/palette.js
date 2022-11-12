@@ -76,7 +76,10 @@ export function colorFromHCL(hcl) {
 export function RGBtoHEX(rgb) {
   return rgb
     .toArray()
-    .reduce((previous, current) => previous.concat(toHexString(current)), "");
+    .reduce(
+      (previous, current) => previous.concat(toHexString(Math.round(current))),
+      ""
+    );
 }
 
 export function HEXtoRGB(hex) {

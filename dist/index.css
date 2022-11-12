@@ -31,7 +31,6 @@ body {
   width: 1px;
   background: white;
   position: absolute;
-  left: 0px;
 }
 
 .color-square__y-cursor {
@@ -39,36 +38,30 @@ body {
   height: 1px;
   background: white;
   position: absolute;
-  top: 255px;
 }
 
 .color-slider {
   display: flex;
   width: 256px;
-  height: 10px;
+  height: 20px;
   border: 1px solid black;
   position: relative;
 }
 
 .color-slider__cursor {
-  width: 3px;
-  height: 16px;
-  background: white;
-  border: 1px solid black;
+  width: 1px;
+  height: 0px;
+  border-top: 8px solid white;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
   position: absolute;
-  top: -4px;
-  left: -2px;
+  top: -9px;
+  left: -6px;
   cursor: pointer;
 }
 
 .color-monitor span {
   display: inline-block;
-}
-
-.color-monitor [contenteditable="true"]:active,
-.color-monitor [contenteditable="true"]:focus {
-  border: none;
-  outline: 1px groove #777;
 }
 
 .color-display {
@@ -84,18 +77,49 @@ body {
 }
 
 .component-color {
-  width: 9.5em;
+  width: 11em;
   margin: auto;
   margin-bottom: 1em;
 }
 
-.component-color__header {
-  color: #979797;
-}
-
-.component-color__value {
+.component-color__cell {
   width: 2.5em;
   text-align: center;
+  margin: 0px 0.25em;
+}
+
+.component-color__header {
+  color: #ccc;
+}
+
+.hex-color__label {
+  width: 3em;
+  color: #ccc;
+}
+
+.component-color__value-row {
+  background: #444;
+  outline: 1px solid #888;
+  padding: 1px 0px;
+}
+
+.hex-color__value {
+  width: 6em;
+  text-align: center;
+  background: #444;
+  outline: 1px solid #888;
+}
+
+.color-monitor [contenteditable="true"]:hover {
+  background: #555;
+  outline: 1px solid #b7b7b7;
+}
+
+.color-monitor [contenteditable="true"]:active,
+.color-monitor [contenteditable="true"]:focus {
+  outline: 1px solid #e7e7e7;
+  background: #666;
+  color: #fff;
 }
 
 .component-color__spacer {
@@ -117,18 +141,4 @@ body {
 .hex-color {
   width: 9.5em;
   margin: auto;
-}
-
-.hex-color span {
-  display: inline-block;
-}
-
-.hex-color__label {
-  width: 3em;
-  color: #979797;
-}
-
-.hex-color__value {
-  width: 6em;
-  text-align: center;
 }

@@ -74,11 +74,19 @@ export function getSquareColor(event, squareCanvas, x, y) {
   return colorFromRGB(new RGB(R, G, B));
 }
 
+export function getSliderColor(event, sliderCanvas, x) {
+  const context = getContext(sliderCanvas);
+
+  const pixel = context.getImageData(x, 1, 1, 1);
+  const [R, G, B] = pixel.data;
+  return colorFromRGB(new RGB(R, G, B));
+}
+
 function getContext(canvas) {
   return canvas.getContext("2d");
 }
 
-function getDimensions(canvas) {
+export function getDimensions(canvas) {
   return [canvas.width, canvas.height];
 }
 
