@@ -1,10 +1,5 @@
 import { HCL, colorFromHCL } from "./palette.js";
-import {
-  fillColor,
-  fillSquareColor,
-  fillSliderColor,
-  getSliderColor,
-} from "./canvas.js";
+import { fillColor, fillSquareColor, fillSliderColor } from "./canvas.js";
 
 import State from "./state.js";
 
@@ -62,16 +57,14 @@ window.onload = function () {
 
 // Event listeners
 
-// document.addEventListener("click", (event) => {
-//   //// Square click
-//   if (inSquare(event)) updateSelectedColorFromSquare(event);
-// });
-
 document.addEventListener("mousedown", (event) => {
   //// Square mouse down
   if (inSquare(event)) {
     state.mouseDown.setSquare();
     updateSelectedColorFromSquare(event);
+  } else if (inSlider(event)) {
+    state.mouseDown.setSlider();
+    updateSelectedColorFromSlider(event);
   }
 });
 
@@ -83,22 +76,19 @@ document.addEventListener("mousemove", (event) => {
   //// Square mouse move
   if (state.mouseDown.square) {
     updateSelectedColorFromSquare(event);
+  } else if (state.mouseDown.slider) {
+    updateSelectedColorFromSlider(event);
   } else if (inSquare(event)) {
     state.preview.turnOn();
     updatePreviewColorFromSquare(event);
+  } else if (inSlider(event)) {
+    state.preview.turnOn();
+    updatePreviewColorFromSlider(event);
   } else if (state.preview.on) {
     state.preview.turnOff();
     resetPreviewColor();
   }
 });
-
-//// Slider mouse move
-slider.addEventListener("mousemove", (event) =>
-  updatePreviewColorFromSlider(event)
-);
-
-//// Square mouse out
-slider.addEventListener("mouseout", () => resetPreviewColor());
 
 // Event listener functions
 
@@ -110,7 +100,7 @@ function updatePreviewColorFromSquare(event) {
 
 function updatePreviewColorFromSlider(event) {
   const x = getSliderCoordinates(event);
-  fillColor(preview, getSliderColor(event, slider, x));
+  fillColor(preview, getSliderColor(x));
 }
 
 function resetPreviewColor() {
@@ -131,12 +121,25 @@ function updateSelectedColorFromSquare(event) {
   updateValues(color);
 }
 
+function updateSelectedColorFromSlider(event) {
+  const x = getSliderCoordinates(event);
+  const sliderColor = getSliderColor(x);
+
+  const color = state.color.updateFromHCL(sliderColor.hcl);
+
+  moveSliderCursor(x);
+  fillColor(selected, color);
+  fillColor(preview, color);
+  fillSquareColor(square, color);
+  updateValues(color);
+}
+
 function updateColorView() {}
 
 // Event listener helpers
 
-function inSquare(event) {
-  const bounding = square.getBoundingClientRect();
+function inElement(element, event) {
+  const bounding = element.getBoundingClientRect();
   const within_x =
     bounding.left <= event.clientX && event.clientX <= bounding.right;
   const within_y =
@@ -144,6 +147,9 @@ function inSquare(event) {
 
   return within_x && within_y;
 }
+
+const inSquare = (event) => inElement(square, event);
+const inSlider = (event) => inElement(slider, event);
 
 function getSquareCoordinates(event) {
   const bounding = square.getBoundingClientRect();
@@ -164,15 +170,30 @@ function getSquareColor(x, y) {
   return colorFromHCL(hcl);
 }
 
+function getSliderColor(x) {
+  const [width] = getDimensions(slider);
+
+  const H = state.getColor().hcl.H;
+  const C = x / width;
+  const L = state.getColor().hcl.L;
+
+  const hcl = new HCL(H, C, L);
+  return colorFromHCL(hcl);
+}
+
 function getSliderCoordinates(event) {
   const bounding = slider.getBoundingClientRect();
   const x = event.clientX - bounding.left;
-  return minmax(x, 0, slider.width - 1);
+  return minmax(x, 0, slider.width);
 }
 
 function moveSquareCursors(x, y) {
   square_x_cursor.style["left"] = `${x}px`;
   square_y_cursor.style["top"] = `${y}px`;
+}
+
+function moveSliderCursor(x) {
+  slider_cursor.style["left"] = `${x - 6}px`;
 }
 
 function updateValues() {
