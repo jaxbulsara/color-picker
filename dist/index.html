@@ -20,30 +20,58 @@
     </div>
     <div class="color-monitor">
       <div class="color-display">
-        <div class="color-display__selected"><canvas id="color-selected" height="1px" width="1px"></div>
-        <div class="color-display__preview"><canvas id="color-preview" height="1px" width="1px"></div>
+        <div class="color-display__selected">
+          <canvas id="color-selected" height="1px" width="1px">
+        </div>
+        <div class="color-display__preview">
+          <canvas id="color-preview" height="1px" width="1px">
+        </div>
       </div>
       <div class="component-color">
-        <!-- prettier-ignore -->
-        <div class="component-color__header-row"><span class="component-color__spacer"></span><span class="component-color__cell component-color__header">H</span><span class="component-color__spacer"></span><span class="component-color__cell component-color__header">C</span><span class="component-color__spacer"></span><span class="component-color__cell component-color__header">L</span><span class="component-color__spacer"></span></div>
-        <!-- prettier-ignore -->
-        <div class="component-color__value-row"><span class="component-color__open-paren component-color__spacer">(</span><span id="hcl-h-value" class="component-color__cell component-color__value" contenteditable="true">0</span><span class="component-color__comma component-color__spacer">, </span><span id="hcl-c-value" class="component-color__cell component-color__value" contenteditable="true">0</span><span class="component-color__comma component-color__spacer">, </span><span id="hcl-l-value" class="component-color__cell component-color__value" contenteditable="true">0</span><span class="component-color__close-paren component-color__spacer">)</span></div>
+        <div class="component-color__value-col">
+          <label for="hcl-h-value" class="component-color__cell component-color__header">H</label>
+          <input id="hcl-h-value" class="component-color__cell component-color__value" type="text" value="0"/>
+        </div>
+        <div class="component-color__value-col">
+          <label for="hcl-c-value" class="component-color__cell component-color__header">C</label>
+          <input id="hcl-c-value" class="component-color__cell component-color__value" type="text" value="0"/>
+        </div>
+        <div class="component-color__value-col">
+          <label for="hcl-l-value" class="component-color__cell component-color__header">L</label>
+          <input id="hcl-l-value" class="component-color__cell component-color__value" type="text" value="0"/>
+        </div>
       </div>
       <div class="component-color">
-        <!-- prettier-ignore -->
-        <div class="component-color__header-row"><span class="component-color__spacer"></span><span class="component-color__cell component-color__header">H</span><span class="component-color__spacer"></span><span class="component-color__cell component-color__header">S</span><span class="component-color__spacer"></span><span class="component-color__cell component-color__header">V</span><span class="component-color__spacer"></span></div>
-        <!-- prettier-ignore -->
-        <div class="component-color__value-row"><span class="component-color__open-paren component-color__spacer">(</span><span id="hsv-h-value" class="component-color__cell component-color__value" contenteditable="true">0</span><span class="component-color__comma component-color__spacer">, </span><span id="hsv-s-value" class="component-color__cell component-color__value" contenteditable="true">0</span><span class="component-color__comma component-color__spacer">, </span><span id="hsv-v-value" class="component-color__cell component-color__value" contenteditable="true">0</span><span class="component-color__close-paren component-color__spacer">)</span></div>
+        <div class="component-color__value-col">
+          <label for="hsv-h-value" class="component-color__cell component-color__header">H</label>
+          <input id="hsv-h-value" class="component-color__cell component-color__value" type="text" value="0"/>
+        </div>
+        <div class="component-color__value-col">
+          <label for="hsv-s-value" class="component-color__cell component-color__header">S</label>
+          <input id="hsv-s-value" class="component-color__cell component-color__value" type="text" value="0"/>
+        </div>
+        <div class="component-color__value-col">
+          <label for="hsv-v-value" class="component-color__cell component-color__header">V</label>
+          <input id="hsv-v-value" class="component-color__cell component-color__value" type="text" value="0"/>
+        </div>
       </div>
       <div class="component-color">
-        <!-- prettier-ignore -->
-        <div class="component-color__header-row"><span class="component-color__spacer"></span><span class="component-color__cell component-color__header">R</span><span class="component-color__spacer"></span><span class="component-color__cell component-color__header">G</span><span class="component-color__spacer"></span><span class="component-color__cell component-color__header">B</span><span class="component-color__spacer"></span></div>
-        <!-- prettier-ignore -->
-        <div class="component-color__value-row"><span class="component-color__open-paren component-color__spacer">(</span><span id="rgb-r-value" class="component-color__cell component-color__value" contenteditable="true">0</span><span class="component-color__comma component-color__spacer">, </span><span id="rgb-g-value" class="component-color__cell component-color__value" contenteditable="true">0</span><span class="component-color__comma component-color__spacer">, </span><span id="rgb-b-value" class="component-color__cell component-color__value" contenteditable="true">0</span><span class="component-color__close-paren component-color__spacer">)</span></div>
+        <div class="component-color__value-col">
+          <label for="rgb-r-value" class="component-color__cell component-color__header">R</label>
+          <input id="rgb-r-value" class="component-color__cell component-color__value" type="text" value="0" />
+        </div>
+        <div class="component-color__value-col">
+          <label for="rgb-g-value" class="component-color__cell component-color__header">G</label>
+          <input id="rgb-g-value" class="component-color__cell component-color__value" type="text" value="0" />
+        </div>
+        <div class="component-color__value-col">
+          <label for="rgb-b-value" class="component-color__cell component-color__header">B</label>
+          <input id="rgb-b-value" class="component-color__cell component-color__value" type="text" value="0" />
+        </div>
       </div>
       <div class="hex-color">
-        <span class="hex-color__label">HEX</span>
-        <span id="hex-value" class="hex-color__value" contenteditable="true">#000000</span>
+        <label for="hex-value" class="hex-color__label">HEX</label>
+        <input id="hex-value" class="hex-color__value" type="text" value="#000000"/>
       </div>
     </div>
     </div>

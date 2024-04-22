@@ -53,6 +53,7 @@ window.onload = function () {
   fillSliderColor(slider, color);
 
   moveSquareCursors(0, 255);
+  updateValues();
 };
 
 // Event listeners
@@ -89,6 +90,17 @@ document.addEventListener("mousemove", (event) => {
     resetPreviewColor();
   }
 });
+
+hex_value.addEventListener("focus", () => hex_value.select());
+rgb_r_value.addEventListener("focus", () => rgb_r_value.select());
+rgb_g_value.addEventListener("focus", () => rgb_g_value.select());
+rgb_b_value.addEventListener("focus", () => rgb_b_value.select());
+hsv_h_value.addEventListener("focus", () => hsv_h_value.select());
+hsv_s_value.addEventListener("focus", () => hsv_s_value.select());
+hsv_v_value.addEventListener("focus", () => hsv_v_value.select());
+hcl_h_value.addEventListener("focus", () => hcl_h_value.select());
+hcl_c_value.addEventListener("focus", () => hcl_c_value.select());
+hcl_l_value.addEventListener("focus", () => hcl_l_value.select());
 
 // Event listener functions
 
@@ -207,16 +219,16 @@ function updateValues() {
   const C = round(toPercent(color.hcl.C.toPrecision(3)), 2).toString();
   const L = round(toPercent(color.hcl.L.toPrecision(3)), 2).toString();
 
-  hex_value.textContent = hex;
-  rgb_r_value.textContent = R;
-  rgb_g_value.textContent = G;
-  rgb_b_value.textContent = B;
-  hsv_h_value.textContent = hsvH;
-  hsv_s_value.textContent = S;
-  hsv_v_value.textContent = V;
-  hcl_h_value.textContent = hclH;
-  hcl_c_value.textContent = C;
-  hcl_l_value.textContent = L;
+  hex_value.value = hex;
+  rgb_r_value.value = R;
+  rgb_g_value.value = G;
+  rgb_b_value.value = B;
+  hsv_h_value.value = hsvH;
+  hsv_s_value.value = S;
+  hsv_v_value.value = V;
+  hcl_h_value.value = hclH;
+  hcl_c_value.value = C;
+  hcl_l_value.value = L;
 }
 
 // Utility functions
